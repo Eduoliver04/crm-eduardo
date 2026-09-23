@@ -1,0 +1,1802 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<title>Caderno de Caixa</title>
+<style>
+  :root {
+    color-scheme: light;
+    --paper:        #F1F4F1;
+    --surface:      #FFFFFF;
+    --surface-2:    #E9EEEB;
+    --surface-3:    #DFE6E2;
+    --ink:          #10201C;
+    --ink-2:        #46574F;
+    --ink-3:        #78877F;
+    --rule:         #DBE3DE;
+    --rule-strong:  #C3CEC8;
+    --accent:       #0F6B57;
+    --accent-ink:   #FFFFFF;
+    --accent-soft:  #E2EFEA;
+
+    --pos:          #0F7A5A;
+    --neg:          #C43A5E;
+    --warn:         #8A5D05;
+    --pos-text:     #0B6B4A;
+    --neg-text:     #A82F4E;
+
+    --s1: #0E8C7A;
+    --s2: #C6890B;
+    --s3: #2F62BE;
+    --s4: #C43A5E;
+    --s5: #6B5BD0;
+
+    --grid:         #E4EAE6;
+    --shadow:       0 1px 2px rgba(16,32,28,.06), 0 8px 24px -16px rgba(16,32,28,.18);
+
+    --font-ui: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-num: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper:        #0B1412;
+      --surface:      #15201D;
+      --surface-2:    #1C2824;
+      --surface-3:    #24322D;
+      --ink:          #E7EEEA;
+      --ink-2:        #A9B8B1;
+      --ink-3:        #7C8B85;
+      --rule:         #26332E;
+      --rule-strong:  #33423C;
+      --accent:       #35B392;
+      --accent-ink:   #06211A;
+      --accent-soft:  #16302A;
+
+      --pos:          #17997C;
+      --neg:          #D45E6E;
+      --warn:         #D9A93A;
+      --pos-text:     #4FC79F;
+      --neg-text:     #E8798F;
+
+      --s1: #16997F;
+      --s2: #B87E08;
+      --s3: #4C7FDC;
+      --s4: #D9506F;
+      --s5: #8B7BE8;
+
+      --grid:         #223029;
+      --shadow:       0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper:        #0B1412;
+    --surface:      #15201D;
+    --surface-2:    #1C2824;
+    --surface-3:    #24322D;
+    --ink:          #E7EEEA;
+    --ink-2:        #A9B8B1;
+    --ink-3:        #7C8B85;
+    --rule:         #26332E;
+    --rule-strong:  #33423C;
+    --accent:       #35B392;
+    --accent-ink:   #06211A;
+    --accent-soft:  #16302A;
+
+    --pos:          #17997C;
+    --neg:          #D45E6E;
+    --warn:         #D9A93A;
+    --pos-text:     #4FC79F;
+    --neg-text:     #E8798F;
+
+    --s1: #16997F;
+    --s2: #B87E08;
+    --s3: #4C7FDC;
+    --s4: #D9506F;
+    --s5: #8B7BE8;
+
+    --grid:         #223029;
+    --shadow:       0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-ui);
+    font-size: 15px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { margin: 0; font-weight: 700; text-wrap: balance; font-variation-settings: "wdth" 112; letter-spacing: -0.012em; }
+  button { font: inherit; color: inherit; }
+  input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .num { font-family: var(--font-num); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .eyebrow {
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em;
+    font-weight: 600; color: var(--ink-3); font-variation-settings: "wdth" 100;
+  }
+
+  /* ---------- shell ---------- */
+  .app { display: flex; min-height: 100%; }
+
+  .rail {
+    width: 216px; flex: 0 0 216px;
+    background: var(--surface);
+    border-right: 1px solid var(--rule);
+    padding: 18px 14px calc(18px + env(safe-area-inset-bottom, 0px));
+    display: flex; flex-direction: column; gap: 22px;
+    position: sticky; top: env(safe-area-inset-top, 0px); align-self: flex-start;
+    height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  }
+  .brand { display: flex; align-items: baseline; gap: 8px; padding: 0 6px; }
+  .brand-mark {
+    font-family: var(--font-num); font-weight: 600; font-size: 13px;
+    color: var(--accent-ink); background: var(--accent);
+    width: 26px; height: 26px; border-radius: 7px;
+    display: grid; place-items: center; flex: 0 0 auto;
+  }
+  .brand-name { font-size: 15.5px; font-weight: 700; font-variation-settings: "wdth" 112; }
+  .nav { display: flex; flex-direction: column; gap: 2px; }
+  .nav button {
+    display: flex; align-items: center; gap: 9px;
+    background: none; border: 0; text-align: left;
+    padding: 8px 10px; border-radius: 8px; cursor: pointer;
+    font-size: 14px; font-weight: 500; color: var(--ink-2);
+  }
+  .nav button:hover { background: var(--surface-2); color: var(--ink); }
+  .nav button[aria-current="page"] { background: var(--accent-soft); color: var(--accent); font-weight: 650; }
+  .nav .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .45; flex: 0 0 auto; }
+  .nav button[aria-current="page"] .dot { opacity: 1; }
+  .rail-foot { margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding: 0 6px; }
+  .rail-note { font-size: 11.5px; color: var(--ink-3); line-height: 1.35; }
+
+  .main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+
+  .topbar {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    padding: 12px 20px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .view-title { font-size: 19px; }
+  .topbar-spacer { flex: 1 1 auto; }
+
+  .monthnav { display: flex; align-items: center; gap: 2px; background: var(--surface); border: 1px solid var(--rule); border-radius: 9px; padding: 3px; }
+  .monthnav button {
+    background: none; border: 0; cursor: pointer; padding: 4px 8px; border-radius: 6px;
+    color: var(--ink-2); font-size: 15px; line-height: 1;
+  }
+  .monthnav button:hover { background: var(--surface-2); color: var(--ink); }
+  #monthLabel {
+    min-width: 116px; text-align: center; font-size: 13.5px; font-weight: 600;
+    text-transform: capitalize; padding: 0 4px;
+  }
+
+  .content { padding: 20px 20px calc(88px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 18px; max-width: 1180px; width: 100%; }
+
+  /* ---------- cards ---------- */
+  .card {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 12px;
+    padding: 16px;
+  }
+  .card-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .card-head h3 { font-size: 14.5px; }
+  .card-head .hint { font-size: 11.5px; color: var(--ink-3); margin-left: auto; }
+
+  .grid { display: grid; gap: 14px; align-items: start; }
+  .g-kpi { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .g-2 { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); }
+
+  /* KPI: not cards — figures on the plane, separated by rules */
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden;
+  }
+  .kpi { padding: 14px 16px; border-left: 1px solid var(--rule); }
+  .kpi:first-child { border-left: 0; }
+  .kpi-val { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-size: 22px; font-weight: 500; margin-top: 3px; letter-spacing: -0.02em; }
+  .kpi-sub { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; }
+  .kpi.lead { background: var(--accent-soft); }
+  .kpi.lead .kpi-val { font-size: 26px; font-weight: 600; }
+
+  .val-pos { color: var(--pos-text); }
+  .val-neg { color: var(--neg-text); }
+
+  /* ---------- chart ---------- */
+  .chart-wrap { position: relative; }
+  .chart-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .grid-line { stroke: var(--grid); stroke-width: 1; }
+  .axis-line { stroke: var(--rule-strong); stroke-width: 1; }
+  .tick { fill: var(--ink-3); font-size: 9.5px; font-family: var(--font-num); }
+  .xlab { fill: var(--ink-3); font-size: 9.5px; font-family: var(--font-ui); text-anchor: middle; }
+  .xlab.now { fill: var(--ink); font-weight: 650; }
+  .bar { transition: opacity .12s ease; }
+  .bar.dim { opacity: .34; }
+  .dlabel { font-family: var(--font-num); font-size: 10px; font-weight: 500; text-anchor: middle; }
+
+  .tip {
+    position: absolute; pointer-events: none; z-index: 30;
+    background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 8px;
+    box-shadow: var(--shadow); padding: 8px 10px; min-width: 132px;
+    font-size: 12px; transform: translate(-50%, -112%); white-space: nowrap;
+  }
+  .tip[hidden] { display: none !important; }
+  .tip-t { font-weight: 650; font-size: 11px; text-transform: capitalize; margin-bottom: 4px; }
+  .tip-r { display: flex; align-items: center; gap: 7px; justify-content: space-between; }
+  .tip-r + .tip-r { margin-top: 2px; }
+  .tip-k { display: flex; align-items: center; gap: 6px; color: var(--ink-2); }
+  .swatch { width: 9px; height: 9px; border-radius: 2px; flex: 0 0 auto; }
+  .tip-v { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-2); }
+
+  /* ---------- lists / rows ---------- */
+  .rows { display: flex; flex-direction: column; }
+  .daygroup + .daygroup { margin-top: 4px; }
+  .dayhead {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 10px 2px 6px; border-bottom: 1px solid var(--rule);
+    font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); font-weight: 600;
+  }
+  .dayhead .dsum { margin-left: auto; font-family: var(--font-num); letter-spacing: 0; text-transform: none; }
+  .row {
+    display: grid; grid-template-columns: 4px 1fr auto auto; align-items: center; gap: 10px;
+    padding: 9px 2px; border-bottom: 1px solid var(--rule);
+  }
+  .row:hover { background: var(--surface-2); }
+  .stripe { width: 4px; height: 26px; border-radius: 2px; }
+  .row-main { min-width: 0; }
+  .row-desc { font-size: 13.5px; font-weight: 500; overflow-wrap: anywhere; }
+  .row-meta { font-size: 11.5px; color: var(--ink-3); display: flex; gap: 6px; flex-wrap: wrap; }
+  .row-val { font-family: var(--font-num); font-variant-numeric: tabular-nums; font-size: 14px; font-weight: 500; white-space: nowrap; }
+  .row-act { display: flex; gap: 4px; }
+  .icon-btn {
+    background: none; border: 1px solid transparent; border-radius: 6px; cursor: pointer;
+    padding: 3px 7px; font-size: 11px; color: var(--ink-3);
+  }
+  .icon-btn:hover { background: var(--surface-3); color: var(--ink); border-color: var(--rule); }
+  .icon-btn.danger:hover { color: var(--neg-text); }
+  .icon-btn.armed { color: var(--neg-text); border-color: var(--neg-text); font-weight: 600; }
+
+  .chip {
+    display: inline-block; padding: 1px 7px; border-radius: 999px;
+    background: var(--surface-2); font-size: 11px; color: var(--ink-2); font-weight: 500;
+  }
+
+  /* ---------- forms ---------- */
+  .form { display: grid; gap: 10px; }
+  .fgrid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  label.fl { display: flex; flex-direction: column; gap: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); font-weight: 600; }
+  .fl input, .fl select {
+    background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 8px;
+    padding: 8px 9px; font-size: 14px; width: 100%; min-width: 0;
+    text-transform: none; letter-spacing: 0; color: var(--ink); font-weight: 400;
+  }
+  .fl input.num-in { font-family: var(--font-num); }
+  .fl input:hover, .fl select:hover { border-color: var(--ink-3); }
+
+  .seg { display: inline-flex; background: var(--surface-2); border-radius: 9px; padding: 3px; gap: 2px; flex-wrap: wrap; }
+  .seg button {
+    border: 0; background: none; cursor: pointer; padding: 6px 12px; border-radius: 6px;
+    font-size: 13px; font-weight: 550; color: var(--ink-2);
+  }
+  .seg button:hover { color: var(--ink); }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(16,32,28,.1); }
+  .seg button[aria-pressed="true"][data-t="ganho"] { color: var(--pos-text); }
+  .seg button[aria-pressed="true"][data-t="despesa"] { color: var(--neg-text); }
+  .seg button[aria-pressed="true"][data-t="perda"] { color: var(--warn); }
+
+  .btn {
+    border: 1px solid transparent; border-radius: 8px; cursor: pointer;
+    padding: 9px 16px; font-size: 14px; font-weight: 600;
+    background: var(--accent); color: var(--accent-ink);
+  }
+  .btn:hover { filter: brightness(1.07); }
+  .btn.ghost { background: var(--surface); color: var(--ink); border-color: var(--rule-strong); font-weight: 550; }
+  .btn.ghost:hover { background: var(--surface-2); filter: none; }
+  .btn.sm { padding: 6px 11px; font-size: 12.5px; }
+  .form-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .form-msg { font-size: 12.5px; color: var(--ink-3); }
+  .form-msg.err { color: var(--neg-text); }
+  .form-msg.ok { color: var(--pos-text); }
+
+  .filters { display: flex; gap: 8px; align-items: end; flex-wrap: wrap; margin-bottom: 4px; }
+
+  /* ---------- meters ---------- */
+  .meter-list { display: flex; flex-direction: column; gap: 13px; }
+  .meter-top { display: flex; align-items: baseline; gap: 8px; font-size: 13px; }
+  .meter-top .mv { margin-left: auto; font-family: var(--font-num); font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--ink-2); }
+  .track { height: 8px; border-radius: 999px; background: var(--surface-3); overflow: hidden; margin-top: 5px; display: flex; }
+  .fill { height: 100%; border-radius: 999px; background: var(--accent); }
+  .fill.over { background: var(--neg); }
+  .fill.near { background: var(--warn); }
+  .meter-note { font-size: 11.5px; color: var(--ink-3); margin-top: 4px; }
+  .status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 650; }
+  .status.over { color: var(--neg-text); }
+  .status.near { color: var(--warn); }
+  .status.ok { color: var(--pos-text); }
+
+  /* ---------- table ---------- */
+  .tbl-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  #invTbl { min-width: 468px; }
+  th, td { text-align: right; padding: 9px 8px; border-bottom: 1px solid var(--rule); font-size: 13.5px; white-space: nowrap; }
+  #topTbl td:first-child { white-space: normal; overflow-wrap: anywhere; }
+  th { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); font-weight: 600; }
+  th:first-child, td:first-child { text-align: left; }
+  td.n { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+  tr.tot td { border-bottom: 0; border-top: 1px solid var(--rule-strong); font-weight: 650; }
+  .mini-in {
+    width: 94px; background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 6px;
+    padding: 4px 7px; font-family: var(--font-num); font-size: 13px; text-align: right;
+  }
+
+  /* ---------- banner ---------- */
+  .banner {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    border-radius: 12px; padding: 12px 14px; font-size: 13px;
+  }
+  .banner strong { font-weight: 650; }
+  .banner .sp { flex: 1 1 auto; }
+
+  .empty { text-align: center; padding: 26px 10px; color: var(--ink-3); font-size: 13px; }
+
+  .sync {
+    font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 999px; border: 1px solid var(--rule-strong);
+    color: var(--ink-3); background: var(--surface); white-space: nowrap; cursor: pointer;
+  }
+  .sync:hover { border-color: var(--ink-3); }
+  .sync[data-s="saving"] { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
+  .sync[data-s="cloud"]  { color: var(--pos-text); border-color: color-mix(in srgb, var(--pos) 40%, transparent); }
+  .sync[data-s="local"]  { color: var(--ink-2); }
+
+  .toast {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 60;
+    background: var(--ink); color: var(--paper); border-radius: 9px;
+    padding: 10px 16px; font-size: 13px; font-weight: 500; box-shadow: var(--shadow);
+    max-width: calc(100vw - 32px); text-align: center;
+  }
+  @media (max-width: 860px) { .toast { bottom: calc(78px + env(safe-area-inset-bottom, 0px)); } }
+
+  /* ---------- bottom nav (mobile) ---------- */
+  .tabbar { display: none; }
+
+  @media (max-width: 1000px) {
+    .g-2 { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 860px) {
+    .rail { display: none; }
+    .kpis { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .kpi:nth-child(3) { border-left: 0; }
+    .kpi:nth-child(n+3) { border-top: 1px solid var(--rule); }
+    .content { padding-left: 16px; padding-right: 16px; }
+    .topbar { padding: 10px 16px; }
+    .view-title { font-size: 17px; }
+    .tabbar {
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      background: var(--surface); border-top: 1px solid var(--rule);
+      padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+    }
+    .tabbar button {
+      flex: 1 1 0; background: none; border: 0; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      padding: 6px 2px; border-radius: 8px; font-size: 10.5px; font-weight: 600; color: var(--ink-3);
+    }
+    .tabbar button[aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
+    .tabbar .gl { font-size: 15px; line-height: 1; }
+    .row { grid-template-columns: 4px 1fr auto; }
+    .row-act { grid-column: 3; }
+    .row-val { grid-column: 3; grid-row: 1; }
+  }
+  @media (max-width: 420px) {
+    .kpi-val { font-size: 19px; }
+    .kpi.lead .kpi-val { font-size: 21px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <span class="brand-mark">R$</span>
+      <span class="brand-name">Caderno<br>de Caixa</span>
+    </div>
+    <nav class="nav" id="navRail" aria-label="Seções"></nav>
+    <div class="rail-foot">
+      <button class="btn ghost sm" id="btnExport">Exportar CSV</button>
+      <p class="rail-note" id="storageNote">—</p>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1 class="view-title" id="viewTitle">Visão geral</h1>
+      <div class="topbar-spacer"></div>
+      <span class="sync" id="syncPill" data-s="idle">Salvo</span>
+      <div class="monthnav">
+        <button id="mPrev" title="Mês anterior" aria-label="Mês anterior">‹</button>
+        <span id="monthLabel" class="num">—</span>
+        <button id="mNext" title="Mês seguinte" aria-label="Mês seguinte">›</button>
+      </div>
+      <button class="btn ghost sm" id="mToday">Hoje</button>
+    </header>
+
+    <div class="content">
+      <div class="banner" id="demoBanner" hidden>
+        <span id="demoText"></span>
+        <span class="sp"></span>
+        <button class="btn sm" id="btnDemoToggle"></button>
+      </div>
+
+      <!-- ============ RESUMO ============ -->
+      <section id="view-resumo">
+        <div class="kpis" id="kpis"></div>
+
+        <div class="grid g-2" style="margin-top:14px">
+          <div class="card">
+            <div class="card-head">
+              <h3>Fluxo dos últimos 12 meses</h3>
+              <span class="hint">entradas acima da linha, saídas abaixo</span>
+            </div>
+            <div class="chart-wrap" id="flowWrap">
+              <svg id="flowChart" viewBox="0 0 760 270" role="img" aria-label="Entradas e saídas por mês"></svg>
+              <div class="tip" id="flowTip" hidden></div>
+            </div>
+            <div class="legend">
+              <span><i class="swatch" style="background:var(--pos)"></i>Ganhos</span>
+              <span><i class="swatch" style="background:var(--neg)"></i>Despesas + perdas</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Onde o dinheiro foi</h3><span class="hint">despesas do mês</span></div>
+            <div class="chart-wrap" id="catWrap">
+              <svg id="catChart" viewBox="0 0 420 260" role="img" aria-label="Despesas por categoria"></svg>
+              <div class="tip" id="catTip" hidden></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid g-2" style="margin-top:14px">
+          <div class="card">
+            <div class="card-head"><h3>Patrimônio</h3></div>
+            <div id="netWorth"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Maiores lançamentos do mês</h3></div>
+            <div class="tbl-wrap"><table id="topTbl"></table></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ LANÇAMENTOS ============ -->
+      <section id="view-lancamentos" hidden>
+        <div class="card">
+          <div class="card-head"><h3>Novo lançamento</h3></div>
+          <form class="form" id="entryForm" autocomplete="off">
+            <div class="seg" id="tipoSeg" role="group" aria-label="Tipo de lançamento">
+              <button type="button" data-t="ganho" aria-pressed="false">Ganho</button>
+              <button type="button" data-t="despesa" aria-pressed="true">Despesa</button>
+              <button type="button" data-t="perda" aria-pressed="false">Perda</button>
+            </div>
+            <div class="fgrid">
+              <label class="fl">Valor (R$)
+                <input class="num-in" id="fValor" type="text" inputmode="decimal" placeholder="0,00">
+              </label>
+              <label class="fl">Data
+                <input class="num-in" id="fData" type="date">
+              </label>
+              <label class="fl">Categoria
+                <select id="fCategoria"></select>
+              </label>
+              <label class="fl">Forma
+                <select id="fPagamento"></select>
+              </label>
+              <label class="fl" style="grid-column: span 2; min-width:0">Descrição
+                <input id="fDesc" type="text" placeholder="ex.: mercado da semana">
+              </label>
+            </div>
+            <div class="form-foot">
+              <button class="btn" type="submit" id="fSubmit">Lançar</button>
+              <button class="btn ghost" type="button" id="fCancel" hidden>Cancelar edição</button>
+              <span class="form-msg" id="fMsg"></span>
+            </div>
+          </form>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <div class="card-head"><h3>Lançamentos do mês</h3><span class="hint" id="lancCount"></span></div>
+          <div class="filters">
+            <label class="fl">Tipo
+              <select id="flTipo">
+                <option value="">Todos</option>
+                <option value="ganho">Ganhos</option>
+                <option value="despesa">Despesas</option>
+                <option value="perda">Perdas</option>
+              </select>
+            </label>
+            <label class="fl">Categoria<select id="flCat"><option value="">Todas</option></select></label>
+            <label class="fl" style="flex:1 1 180px">Buscar<input id="flQ" type="text" placeholder="descrição..."></label>
+          </div>
+          <div class="rows" id="entryRows"></div>
+        </div>
+      </section>
+
+      <!-- ============ INVESTIMENTOS ============ -->
+      <section id="view-investimentos" hidden>
+        <div class="kpis" id="invKpis"></div>
+
+        <div class="grid g-2" style="margin-top:14px">
+          <div class="card">
+            <div class="card-head"><h3>Carteira</h3><span class="hint">atualize o valor atual para ver a rentabilidade</span></div>
+            <div class="tbl-wrap"><table id="invTbl"></table></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Alocação por tipo</h3></div>
+            <div class="chart-wrap" id="allocWrap">
+              <svg id="allocChart" viewBox="0 0 420 60" role="img" aria-label="Alocação da carteira por tipo"></svg>
+              <div class="tip" id="allocTip" hidden></div>
+            </div>
+            <div class="legend" id="allocLegend"></div>
+          </div>
+        </div>
+
+        <div class="grid g-2" style="margin-top:14px">
+          <div class="card">
+            <div class="card-head"><h3>Novo ativo</h3></div>
+            <form class="form" id="assetForm" autocomplete="off">
+              <div class="fgrid">
+                <label class="fl">Nome<input id="aNome" type="text" placeholder="ex.: Tesouro Selic 2029"></label>
+                <label class="fl">Tipo<select id="aTipo"></select></label>
+                <label class="fl">Aporte inicial (R$)<input class="num-in" id="aValor" type="text" inputmode="decimal" placeholder="0,00"></label>
+                <label class="fl">Data<input class="num-in" id="aData" type="date"></label>
+              </div>
+              <div class="form-foot">
+                <button class="btn" type="submit">Adicionar ativo</button>
+                <span class="form-msg" id="aMsg"></span>
+              </div>
+            </form>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Registrar aporte</h3></div>
+            <form class="form" id="aporteForm" autocomplete="off">
+              <div class="fgrid">
+                <label class="fl">Ativo<select id="pAtivo"></select></label>
+                <label class="fl">Valor (R$)<input class="num-in" id="pValor" type="text" inputmode="decimal" placeholder="0,00"></label>
+                <label class="fl">Data<input class="num-in" id="pData" type="date"></label>
+              </div>
+              <div class="form-foot">
+                <button class="btn" type="submit">Aportar</button>
+                <span class="form-msg" id="pMsg"></span>
+              </div>
+            </form>
+            <p class="meter-note" style="margin-top:12px">Aportes ficam registrados só na carteira. Se quiser que o dinheiro também saia do caixa do mês, lance uma despesa na categoria <em>Investimento</em>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ORÇAMENTO ============ -->
+      <section id="view-orcamento" hidden>
+        <div class="grid g-2">
+          <div class="card">
+            <div class="card-head"><h3>Limite por categoria</h3><span class="hint">gasto no mês selecionado</span></div>
+            <div class="meter-list" id="budgetList"></div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-head"><h3>Meta de economia</h3></div>
+              <div id="goalBox"></div>
+              <div class="fgrid" style="margin-top:14px">
+                <label class="fl">Meta mensal (R$)<input class="num-in" id="cMeta" type="text" inputmode="decimal" placeholder="0,00"></label>
+                <label class="fl">Saldo inicial (R$)<input class="num-in" id="cSaldo" type="text" inputmode="decimal" placeholder="0,00"></label>
+              </div>
+              <p class="meter-note">O saldo inicial é quanto você já tinha em conta antes do primeiro lançamento.</p>
+            </div>
+            <div class="card" style="margin-top:14px">
+              <div class="card-head"><h3>Definir limites</h3></div>
+              <div class="tbl-wrap"><table id="budgetTbl"></table></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<nav class="tabbar" id="navTabs" aria-label="Seções"></nav>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ================= constants ================= */
+  const VIEWS = [
+    { id: "resumo",        label: "Visão geral",   short: "Resumo",  glyph: "◎" },
+    { id: "lancamentos",   label: "Lançamentos",   short: "Lanç.",   glyph: "≡" },
+    { id: "investimentos", label: "Investimentos", short: "Invest.", glyph: "↗" },
+    { id: "orcamento",     label: "Orçamento",     short: "Metas",   glyph: "◔" },
+  ];
+
+  const CATS = {
+    ganho:   ["Salário", "Estágio/Bolsa", "Freelance", "Vendas", "Presente", "Rendimento", "Outros"],
+    despesa: ["Mercado", "Alimentação", "Transporte", "Moradia", "Cartão de crédito", "Faculdade", "Assinaturas", "Saúde", "Lazer", "Roupas", "Investimento", "Outros"],
+    perda:   ["Prejuízo em investimento", "Dívida não recebida", "Perda/roubo", "Desperdício", "Multa/juros", "Outros"],
+  };
+  const PAGAMENTOS = ["Pix", "Débito", "Crédito", "Dinheiro", "Boleto", "Transferência"];
+  const TIPOS_ATIVO = ["Renda fixa", "Ações / FIIs", "Fundos", "Cripto", "Poupança", "Outro"];
+  const SERIES = ["var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)", "var(--s5)"];
+
+  const TIPO_META = {
+    ganho:   { label: "Ganho",   sign: +1, color: "var(--pos)", text: "val-pos" },
+    despesa: { label: "Despesa", sign: -1, color: "var(--neg)", text: "val-neg" },
+    perda:   { label: "Perda",   sign: -1, color: "var(--warn)", text: "val-neg" },
+  };
+
+  /* ================= format ================= */
+  const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  const brlNoDec = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+  const money = (n) => brl.format(Number(n) || 0);
+  const money0 = (n) => brlNoDec.format(Number(n) || 0);
+  const pct = (n) => (Number(n) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
+  const signed = (n) => (n > 0 ? "+" : n < 0 ? "−" : "") + money(Math.abs(n));
+
+  function compact(n) {
+    const a = Math.abs(n);
+    if (a >= 1000000) return (n / 1000000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "M";
+    if (a >= 1000) return (n / 1000).toLocaleString("pt-BR", { maximumFractionDigits: a >= 10000 ? 0 : 1 }) + "k";
+    return n.toLocaleString("pt-BR", { maximumFractionDigits: 0 });
+  }
+  function parseMoney(s) {
+    if (typeof s === "number") return s;
+    if (!s) return NaN;
+    let t = String(s).trim().replace(/[R$\s ]/gi, "");
+    if (t.includes(",")) t = t.replace(/\./g, "").replace(",", ".");
+    const v = Number(t);
+    return Number.isFinite(v) ? v : NaN;
+  }
+  const MONTH_NAMES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  const MONTH_ABBR = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  const monthKey = (d) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+  const keyLabel = (k) => { const [y, m] = k.split("-"); return MONTH_NAMES[+m - 1] + " de " + y; };
+  const keyAbbr = (k) => { const [y, m] = k.split("-"); return MONTH_ABBR[+m - 1] + (+m === 1 ? " " + y.slice(2) : ""); };
+  function shiftKey(k, n) {
+    const [y, m] = k.split("-").map(Number);
+    const d = new Date(y, m - 1 + n, 1);
+    return monthKey(d);
+  }
+  const todayISO = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+  function isoLabel(iso) {
+    const [y, m, d] = iso.split("-").map(Number);
+    const dt = new Date(y, m - 1, d);
+    const wd = ["domingo","segunda","terça","quarta","quinta","sexta","sábado"][dt.getDay()];
+    return d + " de " + MONTH_NAMES[m - 1] + " · " + wd;
+  }
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+  /* ================= state ================= */
+  const state = {
+    view: "resumo",
+    month: monthKey(new Date()),
+    config: { orcamentos: {}, metaEconomia: 0, saldoInicial: 0, updatedAt: 0 },
+    months: {},                 // key -> { entries: [], updatedAt }
+    portfolio: { ativos: [], updatedAt: 0 },
+    demo: false,
+    saved: null,
+    editing: null,
+    tipo: "despesa",
+    filters: { tipo: "", cat: "", q: "" },
+    armed: null,
+    backend: "local",
+  };
+
+  /* ================= storage ================= */
+  let DB = null;
+  const LS_KEY = "cadernoDeCaixa.v1";
+  const now = () => Date.now();
+
+  function setNote(t) { const el = document.getElementById("storageNote"); if (el) el.textContent = t; }
+  function setSync(s, label) {
+    const el = document.getElementById("syncPill");
+    if (el) { el.dataset.s = s; el.textContent = label; }
+  }
+  let toastT = null;
+  function toast(text) {
+    let el = document.getElementById("toast");
+    if (!el) { el = document.createElement("div"); el.id = "toast"; el.className = "toast"; document.body.appendChild(el); }
+    el.textContent = text;
+    el.hidden = false;
+    clearTimeout(toastT);
+    toastT = setTimeout(() => { el.hidden = true; }, 3800);
+  }
+
+  function saveLocal() {
+    if (state.demo) return;
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        config: state.config, months: state.months, portfolio: state.portfolio, v: 2,
+      }));
+    } catch (_) {}
+  }
+  function loadLocal() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return false;
+      const d = JSON.parse(raw);
+      if (!d || typeof d !== "object") return false;
+      state.config = Object.assign({ orcamentos: {}, metaEconomia: 0, saldoInicial: 0, updatedAt: 0 }, d.config || {});
+      state.months = {};
+      for (const k of Object.keys(d.months || {})) {
+        const m = d.months[k] || {};
+        state.months[k] = { entries: Array.isArray(m.entries) ? m.entries : [], updatedAt: Number(m.updatedAt) || 0 };
+      }
+      state.portfolio = {
+        ativos: d.portfolio && Array.isArray(d.portfolio.ativos) ? d.portfolio.ativos : [],
+        updatedAt: (d.portfolio && Number(d.portfolio.updatedAt)) || 0,
+      };
+      return true;
+    } catch (_) { return false; }
+  }
+  function hasAnyData() {
+    return Object.keys(state.months).some((k) => entriesOf(k).length) ||
+      state.portfolio.ativos.length > 0 ||
+      Object.keys(state.config.orcamentos || {}).length > 0 ||
+      (Number(state.config.metaEconomia) || 0) > 0 ||
+      (Number(state.config.saldoInicial) || 0) !== 0;
+  }
+
+  /* --- writes: local first, cloud best-effort. Local data is never discarded. --- */
+  const pending = new Map();
+  let inFlight = 0;
+
+  function queueWrite(kind, key) {
+    if (kind === "month") state.months[key].updatedAt = now();
+    else if (kind === "config") state.config.updatedAt = now();
+    else if (kind === "portfolio") state.portfolio.updatedAt = now();
+    saveLocal();
+    const id = kind + ":" + (key || "");
+    if (pending.has(id)) clearTimeout(pending.get(id));
+    if (DB) setSync("saving", "Salvando");
+    pending.set(id, setTimeout(() => { pending.delete(id); flushWrite(kind, key); }, 400));
+  }
+
+  async function flushWrite(kind, key) {
+    saveLocal();
+    if (!DB || state.demo) { setSync("local", "Salvo aqui"); return; }
+    inFlight++;
+    try {
+      if (kind === "month") {
+        const doc = DB.doc("ledger/" + key);
+        const m = state.months[key] || { entries: [], updatedAt: now() };
+        if (m.entries.length) await doc.set({ entries: m.entries, updatedAt: m.updatedAt || now() });
+        else await doc.set({ entries: [], updatedAt: m.updatedAt || now() });
+      } else if (kind === "config") {
+        await DB.doc("config/main").set(JSON.parse(JSON.stringify(state.config)));
+      } else if (kind === "portfolio") {
+        await DB.doc("portfolio/main").set(JSON.parse(JSON.stringify(state.portfolio)));
+      }
+      inFlight--;
+      if (!inFlight && !pending.size) setSync("cloud", "Sincronizado");
+    } catch (e) {
+      inFlight--;
+      setSync("local", "Só neste aparelho");
+      setNote("Seus dados estão salvos neste navegador. A nuvem recusou a gravação — nada foi perdido.");
+    }
+  }
+
+  /* --- merge cloud into local: newest wins per document, nothing is ever deleted --- */
+  async function pullCloud(silent) {
+    if (!DB || state.demo) return false;
+    let cfg, pf, led;
+    try {
+      [cfg, pf, led] = await Promise.all([
+        DB.doc("config/main").get(),
+        DB.doc("portfolio/main").get(),
+        DB.collection("ledger").get(),
+      ]);
+    } catch (_) {
+      setSync("local", "Só neste aparelho");
+      return { ok: false, cloudEmpty: false, changed: false };
+    }
+    let changed = false;
+    const cloudEmpty = !cfg.exists && !pf.exists && led.size === 0;
+
+    if (cfg.exists) {
+      const d = cfg.data() || {};
+      if ((Number(d.updatedAt) || 0) > (Number(state.config.updatedAt) || 0)) {
+        state.config = Object.assign({ orcamentos: {}, metaEconomia: 0, saldoInicial: 0, updatedAt: 0 }, d);
+        changed = true;
+      }
+    }
+    if (pf.exists) {
+      const d = pf.data() || {};
+      if ((Number(d.updatedAt) || 0) > (Number(state.portfolio.updatedAt) || 0)) {
+        state.portfolio = { ativos: Array.isArray(d.ativos) ? d.ativos : [], updatedAt: Number(d.updatedAt) || 0 };
+        changed = true;
+      }
+    }
+    led.docs.forEach((doc) => {
+      const d = doc.data() || {};
+      const local = state.months[doc.id];
+      const cloudAt = Number(d.updatedAt) || 0;
+      if (!local) {
+        if (Array.isArray(d.entries) && d.entries.length) {
+          state.months[doc.id] = { entries: d.entries, updatedAt: cloudAt };
+          changed = true;
+        }
+      } else if (cloudAt > (Number(local.updatedAt) || 0)) {
+        state.months[doc.id] = { entries: Array.isArray(d.entries) ? d.entries : [], updatedAt: cloudAt };
+        changed = true;
+      }
+    });
+
+    if (changed) { saveLocal(); render(); }
+    if (!inFlight && !pending.size) setSync("cloud", "Sincronizado");
+    if (!silent) toast(changed ? "Dados atualizados da nuvem." : "Tudo sincronizado.");
+    return { ok: true, cloudEmpty, changed };
+  }
+
+  function pushAll() {
+    for (const k of Object.keys(state.months)) queueWrite("month", k);
+    queueWrite("config");
+    queueWrite("portfolio");
+  }
+
+  /* ================= demo data ================= */
+  function buildDemo() {
+    const now = new Date();
+    const k = (n) => shiftKey(monthKey(now), -n);
+    const day = (key, d) => key + "-" + String(d).padStart(2, "0");
+    const e = (tipo, data, valor, categoria, descricao, pagamento) => ({ id: uid(), tipo, data, valor, categoria, descricao, pagamento });
+    const months = {};
+    const plan = [
+      [0, 2450, [["Mercado", 520, "compras do mês", 8], ["Transporte", 210, "recarga do cartão", 5], ["Faculdade", 890, "mensalidade", 10], ["Assinaturas", 64, "streaming", 12], ["Lazer", 180, "cinema e saídas", 14], ["Alimentação", 245, "almoços na facul", 16], ["Investimento", 300, "aporte Tesouro", 6]], [["Perda/roubo", 90, "fone perdido no ônibus", 18]]],
+      [1, 2450, [["Mercado", 488, "compras do mês", 7], ["Transporte", 198, "recarga do cartão", 5], ["Faculdade", 890, "mensalidade", 10], ["Assinaturas", 64, "streaming", 12], ["Saúde", 120, "farmácia", 15], ["Alimentação", 230, "almoços na facul", 17]], []],
+      [2, 2260, [["Mercado", 505, "compras do mês", 6], ["Transporte", 205, "recarga do cartão", 4], ["Faculdade", 890, "mensalidade", 10], ["Roupas", 260, "tênis", 20], ["Lazer", 150, "show", 22]], [["Prejuízo em investimento", 140, "venda de ação no negativo", 25]]],
+      [3, 2260, [["Mercado", 470, "compras do mês", 8], ["Transporte", 190, "recarga do cartão", 5], ["Faculdade", 890, "mensalidade", 10], ["Alimentação", 260, "delivery", 19], ["Assinaturas", 64, "streaming", 12]], []],
+      [4, 2100, [["Mercado", 452, "compras do mês", 7], ["Transporte", 186, "recarga do cartão", 5], ["Faculdade", 890, "mensalidade", 10], ["Lazer", 140, "aniversário", 21]], []],
+      [5, 2100, [["Mercado", 461, "compras do mês", 6], ["Transporte", 180, "recarga do cartão", 4], ["Faculdade", 890, "mensalidade", 10], ["Saúde", 220, "dentista", 18]], []],
+    ];
+    for (const [off, salario, desp, perdas] of plan) {
+      const key = k(off);
+      const list = [e("ganho", day(key, 5), salario, "Estágio/Bolsa", "bolsa de estágio", "Transferência")];
+      if (off === 0 || off === 2) list.push(e("ganho", day(key, 20), off === 0 ? 650 : 420, "Freelance", "site para cliente", "Pix"));
+      for (const [cat, v, desc, d] of desp) list.push(e("despesa", day(key, d), v, cat, desc, cat === "Faculdade" ? "Boleto" : "Pix"));
+      for (const [cat, v, desc, d] of perdas) list.push(e("perda", day(key, d), v, cat, desc, "—"));
+      months[key] = { entries: list, updatedAt: 0 };
+    }
+    return {
+      months,
+      config: {
+        saldoInicial: 800,
+        metaEconomia: 400,
+        orcamentos: { Mercado: 500, Transporte: 220, Faculdade: 890, Alimentação: 250, Lazer: 200, Assinaturas: 80, Investimento: 400 },
+      },
+      portfolio: {
+        ativos: [
+          { id: uid(), nome: "Tesouro Selic 2029", tipo: "Renda fixa", valorAtual: 1980, aportes: [{ data: day(k(5), 6), valor: 900 }, { data: day(k(3), 6), valor: 600 }, { data: day(k(0), 6), valor: 300 }] },
+          { id: uid(), nome: "ITSA4", tipo: "Ações / FIIs", valorAtual: 620, aportes: [{ data: day(k(4), 12), valor: 700 }] },
+          { id: uid(), nome: "MXRF11", tipo: "Ações / FIIs", valorAtual: 540, aportes: [{ data: day(k(2), 12), valor: 500 }] },
+          { id: uid(), nome: "Reserva (CDB liquidez)", tipo: "Renda fixa", valorAtual: 1240, aportes: [{ data: day(k(5), 8), valor: 1200 }] },
+        ],
+      },
+    };
+  }
+
+  /* ================= derived ================= */
+  function entriesOf(key) { return (state.months[key] && state.months[key].entries) || []; }
+  function monthTotals(key) {
+    let ganhos = 0, despesas = 0, perdas = 0;
+    for (const e of entriesOf(key)) {
+      const v = Number(e.valor) || 0;
+      if (e.tipo === "ganho") ganhos += v;
+      else if (e.tipo === "despesa") despesas += v;
+      else if (e.tipo === "perda") perdas += v;
+    }
+    return { ganhos, despesas, perdas, saidas: despesas + perdas, saldo: ganhos - despesas - perdas };
+  }
+  function allMonthKeys() { return Object.keys(state.months).filter((k) => entriesOf(k).length).sort(); }
+  function caixaAte(key) {
+    let acc = Number(state.config.saldoInicial) || 0;
+    for (const k of allMonthKeys()) { if (k <= key) acc += monthTotals(k).saldo; }
+    return acc;
+  }
+  function carteira() {
+    let aplicado = 0, atual = 0;
+    const byTipo = new Map();
+    for (const a of state.portfolio.ativos) {
+      const ap = (a.aportes || []).reduce((s, x) => s + (Number(x.valor) || 0), 0);
+      const at = a.valorAtual == null || a.valorAtual === "" ? ap : Number(a.valorAtual) || 0;
+      aplicado += ap; atual += at;
+      byTipo.set(a.tipo || "Outro", (byTipo.get(a.tipo || "Outro") || 0) + at);
+    }
+    return { aplicado, atual, resultado: atual - aplicado, byTipo };
+  }
+  function catTotals(key, tipo) {
+    const m = new Map();
+    for (const e of entriesOf(key)) {
+      if (tipo && e.tipo !== tipo) continue;
+      const c = e.categoria || "Outros";
+      m.set(c, (m.get(c) || 0) + (Number(e.valor) || 0));
+    }
+    return [...m.entries()].sort((a, b) => b[1] - a[1]);
+  }
+
+  /* ================= svg helpers ================= */
+  const NS = "http://www.w3.org/2000/svg";
+  function svgEl(tag, attrs) {
+    const el = document.createElementNS(NS, tag);
+    for (const k in attrs) if (attrs[k] != null) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+  function barUp(x, yBase, w, h, r) {
+    if (h <= 0.4) return `M${x},${yBase} L${x + w},${yBase} Z`;
+    r = Math.min(r, w / 2, h);
+    const t = yBase - h;
+    return `M${x},${yBase} L${x},${t + r} Q${x},${t} ${x + r},${t} L${x + w - r},${t} Q${x + w},${t} ${x + w},${t + r} L${x + w},${yBase} Z`;
+  }
+  function barDown(x, yBase, w, h, r) {
+    if (h <= 0.4) return `M${x},${yBase} L${x + w},${yBase} Z`;
+    r = Math.min(r, w / 2, h);
+    const b = yBase + h;
+    return `M${x},${yBase} L${x},${b - r} Q${x},${b} ${x + r},${b} L${x + w - r},${b} Q${x + w},${b} ${x + w},${b - r} L${x + w},${yBase} Z`;
+  }
+  function barRight(x, y, w, h, r) {
+    if (w <= 0.4) return `M${x},${y} L${x},${y + h} Z`;
+    r = Math.min(r, h / 2, w);
+    return `M${x},${y} L${x + w - r},${y} Q${x + w},${y} ${x + w},${y + r} L${x + w},${y + h - r} Q${x + w},${y + h} ${x + w - r},${y + h} L${x},${y + h} Z`;
+  }
+  function niceMax(v) {
+    if (!(v > 0)) return 100;
+    const p = Math.pow(10, Math.floor(Math.log10(v)));
+    for (const m of [1, 1.25, 1.5, 2, 2.5, 3, 4, 5, 7.5, 10]) if (v <= m * p) return m * p;
+    return 10 * p;
+  }
+  function chartW(wrap, min, max) {
+    const w = Math.round(wrap.clientWidth || 0);
+    return Math.max(min, Math.min(max, w || max));
+  }
+  function showTip(tipEl, wrapEl, px, py, html) {
+    tipEl.innerHTML = html;
+    tipEl.hidden = false;
+    const w = wrapEl.clientWidth;
+    const half = tipEl.offsetWidth / 2;
+    tipEl.style.left = Math.max(half + 2, Math.min(w - half - 2, px)) + "px";
+    tipEl.style.top = py + "px";
+  }
+
+  /* ================= chart: monthly flow ================= */
+  function renderFlow() {
+    const svg = document.getElementById("flowChart");
+    const wrap = document.getElementById("flowWrap");
+    const tip = document.getElementById("flowTip");
+    svg.textContent = "";
+
+    const W = chartW(wrap, 288, 780), H = 270, padL = 46, padR = 10, padT = 22, padB = 34;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const nMonths = W < 460 ? 6 : 12;
+    const keys = [];
+    for (let i = nMonths - 1; i >= 0; i--) keys.push(shiftKey(state.month, -i));
+    const data = keys.map((k) => ({ k, ...monthTotals(k) }));
+    const peak = Math.max(...data.map((d) => Math.max(d.ganhos, d.saidas)), 0);
+    const max = niceMax(peak);
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const zero = padT + plotH / 2;
+    const half = plotH / 2 - 2;
+    const yUp = (v) => (v / max) * half;
+    const slot = plotW / data.length;
+    const bw = Math.min(30, slot * 0.54);
+
+    for (const f of [1, 0.5]) {
+      for (const s of [1, -1]) {
+        const y = zero - s * f * half;
+        svg.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: y, y2: y, class: "grid-line" }));
+        const t = svgEl("text", { x: padL - 8, y: y + 3.2, class: "tick", "text-anchor": "end" });
+        t.textContent = compact(max * f);
+        svg.appendChild(t);
+      }
+    }
+    svg.appendChild(svgEl("line", { x1: padL, x2: W - padR, y1: zero, y2: zero, class: "axis-line" }));
+    const z = svgEl("text", { x: padL - 8, y: zero + 3.2, class: "tick", "text-anchor": "end" });
+    z.textContent = "0";
+    svg.appendChild(z);
+
+    data.forEach((d, i) => {
+      const cx = padL + slot * i + slot / 2;
+      const x = cx - bw / 2;
+      const isNow = d.k === state.month;
+
+      const up = svgEl("path", { d: barUp(x, zero - 1, bw, yUp(d.ganhos), 4), class: "bar" });
+      up.style.fill = "var(--pos)";
+      if (!isNow) up.style.opacity = "0.82";
+      svg.appendChild(up);
+
+      const dn = svgEl("path", { d: barDown(x, zero + 1, bw, yUp(d.saidas), 4), class: "bar" });
+      dn.style.fill = "var(--neg)";
+      if (!isNow) dn.style.opacity = "0.82";
+      svg.appendChild(dn);
+
+      const showLab = slot >= 34 || isNow || i % 2 === (data.length - 1) % 2;
+      if (showLab) {
+        const lab = svgEl("text", { x: cx, y: H - padB + 16, class: "xlab" + (isNow ? " now" : "") });
+        lab.textContent = keyAbbr(d.k);
+        svg.appendChild(lab);
+      }
+
+      if (isNow && (d.ganhos > 0 || d.saidas > 0)) {
+        if (d.ganhos > 0) {
+          const t1 = svgEl("text", { x: cx, y: zero - 1 - yUp(d.ganhos) - 6, class: "dlabel" });
+          t1.style.fill = "var(--pos-text)"; t1.textContent = compact(d.ganhos);
+          svg.appendChild(t1);
+        }
+        if (d.saidas > 0) {
+          const t2 = svgEl("text", { x: cx, y: zero + 1 + yUp(d.saidas) + 13, class: "dlabel" });
+          t2.style.fill = "var(--neg-text)"; t2.textContent = compact(d.saidas);
+          svg.appendChild(t2);
+        }
+      }
+
+      const hit = svgEl("rect", { x: padL + slot * i, y: padT, width: slot, height: plotH, fill: "transparent", style: "cursor:pointer" });
+      hit.addEventListener("mouseenter", () => {
+        showTip(tip, wrap, ((padL + slot * i + slot / 2) / W) * wrap.clientWidth, (zero / H) * wrap.clientHeight,
+          `<div class="tip-t">${esc(keyLabel(d.k))}</div>
+           <div class="tip-r"><span class="tip-k"><i class="swatch" style="background:var(--pos)"></i>Ganhos</span><span class="tip-v">${money0(d.ganhos)}</span></div>
+           <div class="tip-r"><span class="tip-k"><i class="swatch" style="background:var(--neg)"></i>Saídas</span><span class="tip-v">${money0(d.saidas)}</span></div>
+           <div class="tip-r"><span class="tip-k">Saldo</span><span class="tip-v ${d.saldo < 0 ? "val-neg" : "val-pos"}">${signed(d.saldo)}</span></div>`);
+      });
+      hit.addEventListener("click", () => { state.month = d.k; render(); });
+      svg.appendChild(hit);
+    });
+
+    wrap.onmouseleave = () => { tip.hidden = true; };
+  }
+
+  /* ================= chart: categories ================= */
+  function renderCats() {
+    const svg = document.getElementById("catChart");
+    const wrap = document.getElementById("catWrap");
+    const tip = document.getElementById("catTip");
+    svg.textContent = "";
+
+    let rows = catTotals(state.month, "despesa");
+    const perdas = catTotals(state.month, "perda");
+    const perdaTot = perdas.reduce((s, r) => s + r[1], 0);
+    if (perdaTot > 0) rows = rows.concat([["Perdas do mês", perdaTot, true]]).sort((a, b) => b[1] - a[1]);
+
+    const W = chartW(wrap, 268, 560);
+    if (!rows.length) {
+      svg.setAttribute("viewBox", `0 0 ${W} 90`);
+      const t = svgEl("text", { x: W / 2, y: 48, class: "xlab" });
+      t.textContent = "Nenhuma despesa lançada neste mês.";
+      svg.appendChild(t);
+      return;
+    }
+
+    const shown = rows.slice(0, 8);
+    if (rows.length > 8) {
+      const rest = rows.slice(8).reduce((s, r) => s + r[1], 0);
+      shown.push(["Outras " + (rows.length - 8) + " categorias", rest]);
+    }
+    const total = rows.reduce((s, r) => s + r[1], 0);
+    const rowH = 26, gap = 6, padT = 6;
+    const labelW = Math.max(84, Math.min(138, Math.round(W * 0.33)));
+    const padR = 58;
+    const H = padT + shown.length * (rowH + gap);
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const trackW = Math.max(40, W - labelW - padR);
+    const max = Math.max(...shown.map((r) => r[1]));
+
+    shown.forEach((r, i) => {
+      const y = padT + i * (rowH + gap);
+      const bh = 14;
+      const by = y + (rowH - bh) / 2;
+      const w = Math.max(2, (r[1] / max) * trackW);
+
+      const maxChars = Math.max(9, Math.floor((labelW - 12) / 5.6));
+      const lab = svgEl("text", { x: labelW - 10, y: by + bh - 3, class: "xlab" });
+      lab.style.fill = "var(--ink-2)";
+      lab.style.textAnchor = "end";
+      lab.textContent = r[0].length > maxChars ? r[0].slice(0, maxChars - 1) + "…" : r[0];
+      svg.appendChild(lab);
+
+      svg.appendChild(svgEl("rect", { x: labelW, y: by, width: trackW, height: bh, rx: 4, fill: "var(--grid)" }));
+
+      const bar = svgEl("path", { d: barRight(labelW, by, w, bh, 4), class: "bar" });
+      bar.style.fill = r[2] ? "var(--warn)" : "var(--accent)";
+      svg.appendChild(bar);
+
+      const val = svgEl("text", { x: labelW + trackW + 9, y: by + bh - 3, class: "dlabel" });
+      val.style.fill = "var(--ink)";
+      val.style.textAnchor = "start";
+      val.textContent = money0(r[1]).replace("R$", "").trim();
+      svg.appendChild(val);
+
+      const hit = svgEl("rect", { x: 0, y: y, width: W, height: rowH + gap, fill: "transparent", style: "cursor:default" });
+      hit.addEventListener("mouseenter", () => {
+        showTip(tip, wrap, wrap.clientWidth * 0.5, ((by + bh / 2) / H) * wrap.clientHeight,
+          `<div class="tip-t">${esc(r[0])}</div>
+           <div class="tip-r"><span class="tip-k">Valor</span><span class="tip-v">${money(r[1])}</span></div>
+           <div class="tip-r"><span class="tip-k">Do total de saídas</span><span class="tip-v">${pct((r[1] / total) * 100)}</span></div>`);
+      });
+      svg.appendChild(hit);
+    });
+    wrap.onmouseleave = () => { tip.hidden = true; };
+  }
+
+  /* ================= chart: allocation ================= */
+  function renderAlloc() {
+    const svg = document.getElementById("allocChart");
+    const wrap = document.getElementById("allocWrap");
+    const tip = document.getElementById("allocTip");
+    const legend = document.getElementById("allocLegend");
+    svg.textContent = ""; legend.innerHTML = "";
+
+    const c = carteira();
+    const parts = [...c.byTipo.entries()].filter((x) => x[1] > 0).sort((a, b) => b[1] - a[1]);
+    const Wc = chartW(wrap, 268, 560);
+    if (!parts.length) {
+      svg.setAttribute("viewBox", `0 0 ${Wc} 60`);
+      const t = svgEl("text", { x: Wc / 2, y: 34, class: "xlab" });
+      t.textContent = "Nenhum ativo cadastrado ainda.";
+      svg.appendChild(t);
+      return;
+    }
+    const W = Wc, H = 46, bh = 26, y = 8;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const totalAll = parts.reduce((s, p) => s + p[1], 0);
+    const gap = 2;
+    const usable = W - gap * (parts.length - 1);
+
+    const clip = svgEl("clipPath", { id: "allocClip" });
+    clip.appendChild(svgEl("rect", { x: 0, y: y, width: W, height: bh, rx: 6 }));
+    svg.appendChild(clip);
+    const g = svgEl("g", { "clip-path": "url(#allocClip)" });
+
+    let x = 0;
+    parts.forEach((p, i) => {
+      const w = (p[1] / totalAll) * usable;
+      const seg = svgEl("rect", { x, y, width: Math.max(1, w), height: bh });
+      seg.style.fill = SERIES[i % SERIES.length];
+      g.appendChild(seg);
+      if (w > 44) {
+        const t = svgEl("text", { x: x + w / 2, y: y + bh / 2 + 3.5, class: "dlabel" });
+        t.style.fill = (i % SERIES.length) === 1 ? "#1A1303" : "#FFFFFF";
+        t.textContent = Math.round((p[1] / totalAll) * 100) + "%";
+        g.appendChild(t);
+      }
+      const hitX = x, hitW = Math.max(1, w);
+      const hit = svgEl("rect", { x: hitX, y: y, width: hitW, height: bh, fill: "transparent" });
+      hit.addEventListener("mouseenter", () => {
+        showTip(tip, wrap, ((hitX + hitW / 2) / W) * wrap.clientWidth, ((y + bh / 2) / H) * wrap.clientHeight,
+          `<div class="tip-t">${esc(p[0])}</div>
+           <div class="tip-r"><span class="tip-k">Valor atual</span><span class="tip-v">${money(p[1])}</span></div>
+           <div class="tip-r"><span class="tip-k">Da carteira</span><span class="tip-v">${pct((p[1] / totalAll) * 100)}</span></div>`);
+      });
+      g.appendChild(hit);
+      x += w + gap;
+    });
+    svg.appendChild(g);
+
+    parts.forEach((p, i) => {
+      const s = document.createElement("span");
+      s.innerHTML = `<i class="swatch" style="background:${SERIES[i % SERIES.length]}"></i>${esc(p[0])} · <span class="num">${money0(p[1])}</span>`;
+      legend.appendChild(s);
+    });
+    wrap.onmouseleave = () => { tip.hidden = true; };
+  }
+
+  /* ================= renders ================= */
+  function renderKpis() {
+    const t = monthTotals(state.month);
+    const prev = monthTotals(shiftKey(state.month, -1));
+    const c = carteira();
+    const caixa = caixaAte(state.month);
+    const deltaTxt = prev.saidas > 0
+      ? (t.saidas >= prev.saidas ? "+" : "−") + compact(Math.abs(t.saidas - prev.saidas)) + " vs. mês anterior"
+      : "sem base do mês anterior";
+    document.getElementById("kpis").innerHTML = `
+      <div class="kpi lead">
+        <div class="eyebrow">Saldo do mês</div>
+        <div class="kpi-val ${t.saldo < 0 ? "val-neg" : "val-pos"}">${signed(t.saldo)}</div>
+        <div class="kpi-sub">caixa acumulado ${money(caixa)}</div>
+      </div>
+      <div class="kpi">
+        <div class="eyebrow">Ganhos</div>
+        <div class="kpi-val">${money(t.ganhos)}</div>
+        <div class="kpi-sub">${entriesOf(state.month).filter((e) => e.tipo === "ganho").length} lançamento(s)</div>
+      </div>
+      <div class="kpi">
+        <div class="eyebrow">Despesas</div>
+        <div class="kpi-val">${money(t.despesas)}</div>
+        <div class="kpi-sub">${esc(deltaTxt)}</div>
+      </div>
+      <div class="kpi">
+        <div class="eyebrow">Perdas</div>
+        <div class="kpi-val">${money(t.perdas)}</div>
+        <div class="kpi-sub">carteira ${signed(c.resultado)}</div>
+      </div>`;
+  }
+
+  function renderNetWorth() {
+    const c = carteira();
+    const caixa = caixaAte(state.month);
+    const total = caixa + c.atual;
+    const rows = [
+      ["Caixa (conta + dinheiro)", caixa, "var(--accent)"],
+      ["Investimentos (valor atual)", c.atual, "var(--s3)"],
+    ];
+    const max = Math.max(Math.abs(caixa), Math.abs(c.atual), 1);
+    document.getElementById("netWorth").innerHTML = `
+      <div class="kpi-val" style="font-size:28px;font-weight:600">${money(total)}</div>
+      <div class="kpi-sub" style="margin-bottom:14px">soma do caixa acumulado até ${esc(keyLabel(state.month))} com o valor atual da carteira</div>
+      <div class="meter-list">
+        ${rows.map(([lab, v, col]) => `
+          <div>
+            <div class="meter-top"><span>${esc(lab)}</span><span class="mv">${money(v)}</span></div>
+            <div class="track"><div class="fill" style="width:${Math.max(1, (Math.abs(v) / max) * 100)}%;background:${col}"></div></div>
+          </div>`).join("")}
+        <div>
+          <div class="meter-top"><span>Resultado da carteira</span><span class="mv ${c.resultado < 0 ? "val-neg" : "val-pos"}">${signed(c.resultado)}</span></div>
+          <div class="meter-note">aplicado ${money(c.aplicado)} · hoje ${money(c.atual)}${c.aplicado > 0 ? " · " + pct((c.resultado / c.aplicado) * 100) : ""}</div>
+        </div>
+      </div>`;
+  }
+
+  function renderTop() {
+    const list = entriesOf(state.month).slice().sort((a, b) => (Number(b.valor) || 0) - (Number(a.valor) || 0)).slice(0, 6);
+    const tbl = document.getElementById("topTbl");
+    if (!list.length) { tbl.innerHTML = `<tr><td class="empty" colspan="3">Nada lançado neste mês ainda.</td></tr>`; return; }
+    tbl.innerHTML = `<thead><tr><th>Descrição</th><th>Categoria</th><th>Valor</th></tr></thead><tbody>${
+      list.map((e) => {
+        const m = TIPO_META[e.tipo] || TIPO_META.despesa;
+        return `<tr><td>${esc(e.descricao || m.label)}</td><td><span class="chip">${esc(e.categoria || "—")}</span></td><td class="n ${m.sign < 0 ? "val-neg" : "val-pos"}">${m.sign < 0 ? "−" : "+"}${money(e.valor)}</td></tr>`;
+      }).join("")}</tbody>`;
+  }
+
+  function renderEntries() {
+    const box = document.getElementById("entryRows");
+    const all = entriesOf(state.month).slice();
+    const f = state.filters;
+    const q = f.q.trim().toLowerCase();
+    const list = all.filter((e) =>
+      (!f.tipo || e.tipo === f.tipo) &&
+      (!f.cat || e.categoria === f.cat) &&
+      (!q || (e.descricao || "").toLowerCase().includes(q) || (e.categoria || "").toLowerCase().includes(q))
+    ).sort((a, b) => (a.data < b.data ? 1 : a.data > b.data ? -1 : 0));
+
+    document.getElementById("lancCount").textContent =
+      list.length === all.length ? `${all.length} lançamento(s)` : `${list.length} de ${all.length}`;
+
+    const cats = [...new Set(all.map((e) => e.categoria).filter(Boolean))].sort();
+    const sel = document.getElementById("flCat");
+    const keep = sel.value;
+    sel.innerHTML = `<option value="">Todas</option>` + cats.map((c) => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+    sel.value = cats.includes(keep) ? keep : "";
+
+    if (!list.length) {
+      box.innerHTML = `<div class="empty">${all.length ? "Nenhum lançamento com esses filtros." : "Nenhum lançamento neste mês. Use o formulário acima."}</div>`;
+      return;
+    }
+    const byDay = new Map();
+    for (const e of list) { if (!byDay.has(e.data)) byDay.set(e.data, []); byDay.get(e.data).push(e); }
+
+    box.innerHTML = [...byDay.entries()].map(([d, arr]) => {
+      const sum = arr.reduce((s, e) => s + (TIPO_META[e.tipo] || TIPO_META.despesa).sign * (Number(e.valor) || 0), 0);
+      return `<div class="daygroup">
+        <div class="dayhead"><span>${esc(isoLabel(d))}</span><span class="dsum ${sum < 0 ? "val-neg" : "val-pos"}">${signed(sum)}</span></div>
+        ${arr.map((e) => {
+          const m = TIPO_META[e.tipo] || TIPO_META.despesa;
+          const armed = state.armed === e.id;
+          return `<div class="row">
+            <span class="stripe" style="background:${m.color}"></span>
+            <div class="row-main">
+              <div class="row-desc">${esc(e.descricao || m.label)}</div>
+              <div class="row-meta"><span class="chip">${esc(e.categoria || "—")}</span><span>${esc(m.label)}</span>${e.pagamento && e.pagamento !== "—" ? `<span>· ${esc(e.pagamento)}</span>` : ""}</div>
+            </div>
+            <div class="row-val ${m.text}">${m.sign < 0 ? "−" : "+"}${money(e.valor)}</div>
+            <div class="row-act">
+              <button class="icon-btn" data-edit="${e.id}">editar</button>
+              <button class="icon-btn danger ${armed ? "armed" : ""}" data-del="${e.id}">${armed ? "confirmar" : "excluir"}</button>
+            </div>
+          </div>`;
+        }).join("")}
+      </div>`;
+    }).join("");
+  }
+
+  function renderInv() {
+    const c = carteira();
+    document.getElementById("invKpis").innerHTML = `
+      <div class="kpi lead">
+        <div class="eyebrow">Valor da carteira</div>
+        <div class="kpi-val">${money(c.atual)}</div>
+        <div class="kpi-sub">${state.portfolio.ativos.length} ativo(s)</div>
+      </div>
+      <div class="kpi"><div class="eyebrow">Total aplicado</div><div class="kpi-val">${money(c.aplicado)}</div><div class="kpi-sub">soma dos aportes</div></div>
+      <div class="kpi"><div class="eyebrow">Resultado</div><div class="kpi-val ${c.resultado < 0 ? "val-neg" : "val-pos"}">${signed(c.resultado)}</div><div class="kpi-sub">${c.aplicado > 0 ? pct((c.resultado / c.aplicado) * 100) : "—"}</div></div>
+      <div class="kpi"><div class="eyebrow">Maior posição</div><div class="kpi-val">${(() => {
+        const a = state.portfolio.ativos.slice().sort((x, y) => (atualDe(y)) - (atualDe(x)))[0];
+        return a ? money(atualDe(a)) : "—";
+      })()}</div><div class="kpi-sub">${(() => {
+        const a = state.portfolio.ativos.slice().sort((x, y) => (atualDe(y)) - (atualDe(x)))[0];
+        return a ? esc(a.nome) : "cadastre um ativo";
+      })()}</div></div>`;
+
+    const tbl = document.getElementById("invTbl");
+    if (!state.portfolio.ativos.length) {
+      tbl.innerHTML = `<tr><td class="empty" colspan="5">Nenhum ativo. Cadastre o primeiro abaixo.</td></tr>`;
+    } else {
+      tbl.innerHTML = `<thead><tr><th>Ativo</th><th>Aplicado</th><th>Valor atual</th><th>Resultado</th><th></th></tr></thead><tbody>${
+        state.portfolio.ativos.map((a) => {
+          const ap = (a.aportes || []).reduce((s, x) => s + (Number(x.valor) || 0), 0);
+          const at = atualDe(a);
+          const r = at - ap;
+          const armed = state.armed === a.id;
+          return `<tr>
+            <td><div style="font-weight:600">${esc(a.nome)}</div><div class="row-meta"><span class="chip">${esc(a.tipo || "Outro")}</span><span>${(a.aportes || []).length} aporte(s)</span></div></td>
+            <td class="n">${money(ap)}</td>
+            <td><input class="mini-in" data-atual="${a.id}" value="${at.toFixed(2).replace(".", ",")}" inputmode="decimal" aria-label="Valor atual de ${esc(a.nome)}"></td>
+            <td class="n ${r < 0 ? "val-neg" : "val-pos"}">${signed(r)}<div class="row-meta" style="justify-content:flex-end">${ap > 0 ? pct((r / ap) * 100) : "—"}</div></td>
+            <td><button class="icon-btn danger ${armed ? "armed" : ""}" data-delasset="${a.id}">${armed ? "confirmar" : "excluir"}</button></td>
+          </tr>`;
+        }).join("")
+      }<tr class="tot"><td>Total</td><td class="n">${money(c.aplicado)}</td><td class="n">${money(c.atual)}</td><td class="n ${c.resultado < 0 ? "val-neg" : "val-pos"}">${signed(c.resultado)}</td><td></td></tr></tbody>`;
+    }
+
+    const sel = document.getElementById("pAtivo");
+    const keep = sel.value;
+    sel.innerHTML = state.portfolio.ativos.length
+      ? state.portfolio.ativos.map((a) => `<option value="${a.id}">${esc(a.nome)}</option>`).join("")
+      : `<option value="">— cadastre um ativo —</option>`;
+    if ([...sel.options].some((o) => o.value === keep)) sel.value = keep;
+
+    renderAlloc();
+  }
+  function atualDe(a) {
+    const ap = (a.aportes || []).reduce((s, x) => s + (Number(x.valor) || 0), 0);
+    return a.valorAtual == null || a.valorAtual === "" ? ap : Number(a.valorAtual) || 0;
+  }
+
+  function renderBudget() {
+    const gastos = new Map(catTotals(state.month, "despesa"));
+    const orc = state.config.orcamentos || {};
+    const keys = [...new Set([...Object.keys(orc), ...gastos.keys()])]
+      .filter((k) => (Number(orc[k]) || 0) > 0 || (gastos.get(k) || 0) > 0)
+      .sort((a, b) => (gastos.get(b) || 0) - (gastos.get(a) || 0));
+
+    const list = document.getElementById("budgetList");
+    if (!keys.length) {
+      list.innerHTML = `<div class="empty">Defina limites ao lado para acompanhar seus gastos.</div>`;
+    } else {
+      list.innerHTML = keys.map((k) => {
+        const lim = Number(orc[k]) || 0;
+        const g = gastos.get(k) || 0;
+        if (!lim) {
+          return `<div>
+            <div class="meter-top"><span>${esc(k)}</span><span class="mv">${money(g)} · sem limite</span></div>
+            <div class="track"><div class="fill" style="width:0%"></div></div>
+            <div class="meter-note">defina um limite para acompanhar</div>
+          </div>`;
+        }
+        const p = (g / lim) * 100;
+        const cls = p > 100 ? "over" : p >= 85 ? "near" : "";
+        const st = p > 100 ? `<span class="status over">▲ estourou ${money0(g - lim)}</span>`
+          : p >= 85 ? `<span class="status near">● perto do limite</span>`
+          : `<span class="status ok">✓ sobra ${money0(lim - g)}</span>`;
+        return `<div>
+          <div class="meter-top"><span>${esc(k)}</span><span class="mv">${money(g)} de ${money(lim)}</span></div>
+          <div class="track"><div class="fill ${cls}" style="width:${Math.min(100, Math.max(1, p))}%"></div></div>
+          <div class="meter-note">${st} · ${pct(p)} do limite</div>
+        </div>`;
+      }).join("");
+    }
+
+    const t = monthTotals(state.month);
+    const meta = Number(state.config.metaEconomia) || 0;
+    const p = meta > 0 ? (Math.max(0, t.saldo) / meta) * 100 : 0;
+    document.getElementById("goalBox").innerHTML = meta > 0 ? `
+      <div class="meter-top"><span>Guardar ${money(meta)} em ${esc(keyLabel(state.month))}</span><span class="mv">${pct(Math.min(999, p))}</span></div>
+      <div class="track"><div class="fill ${t.saldo >= meta ? "" : t.saldo <= 0 ? "over" : "near"}" style="width:${Math.min(100, Math.max(1, p))}%"></div></div>
+      <div class="meter-note">${t.saldo >= meta
+        ? `<span class="status ok">✓ meta batida</span> · sobrou ${money(t.saldo - meta)}`
+        : t.saldo <= 0
+          ? `<span class="status over">▲ mês no negativo</span> · saldo ${signed(t.saldo)}`
+          : `<span class="status near">● faltam ${money(meta - t.saldo)}</span>`}</div>`
+      : `<div class="empty" style="padding:14px 0">Defina uma meta mensal abaixo.</div>`;
+
+    const tbl = document.getElementById("budgetTbl");
+    const cats = [...new Set([...CATS.despesa, ...Object.keys(orc)])];
+    tbl.innerHTML = `<thead><tr><th>Categoria</th><th>Limite mensal</th></tr></thead><tbody>${
+      cats.map((k) => `<tr><td>${esc(k)}</td><td><input class="mini-in" data-orc="${esc(k)}" value="${(Number(orc[k]) || 0) ? (Number(orc[k])).toFixed(2).replace(".", ",") : ""}" placeholder="—" inputmode="decimal" aria-label="Limite de ${esc(k)}"></td></tr>`).join("")
+    }</tbody>`;
+
+    const m = document.getElementById("cMeta");
+    if (document.activeElement !== m) m.value = meta ? meta.toFixed(2).replace(".", ",") : "";
+    const s = document.getElementById("cSaldo");
+    const si = Number(state.config.saldoInicial) || 0;
+    if (document.activeElement !== s) s.value = si ? si.toFixed(2).replace(".", ",") : "";
+  }
+
+  function render() {
+    document.getElementById("monthLabel").textContent = keyLabel(state.month).replace(" de ", " ");
+    document.getElementById("viewTitle").textContent = (VIEWS.find((v) => v.id === state.view) || VIEWS[0]).label;
+    const banner = document.getElementById("demoBanner");
+    const bText = document.getElementById("demoText");
+    const bBtn = document.getElementById("btnDemoToggle");
+    if (state.demo) {
+      banner.hidden = false;
+      bText.innerHTML = "Você está vendo <strong>dados de exemplo</strong>, só para conhecer o app. Nada aqui é seu e nada é salvo.";
+      bBtn.textContent = "Sair do exemplo";
+    } else if (!hasAnyData()) {
+      banner.hidden = false;
+      bText.innerHTML = "Seu caderno está vazio. Lance a primeira despesa ou ganho em <strong>Lançamentos</strong> — ou veja como fica com dados de exemplo.";
+      bBtn.textContent = "Ver dados de exemplo";
+    } else {
+      banner.hidden = true;
+    }
+    for (const v of VIEWS) document.getElementById("view-" + v.id).hidden = v.id !== state.view;
+    for (const b of document.querySelectorAll("[data-view]")) {
+      if (b.dataset.view === state.view) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
+    }
+    if (state.view === "resumo") { renderKpis(); renderFlow(); renderCats(); renderNetWorth(); renderTop(); }
+    if (state.view === "lancamentos") renderEntries();
+    if (state.view === "investimentos") renderInv();
+    if (state.view === "orcamento") renderBudget();
+  }
+
+  /* ================= mutations ================= */
+  function enterDemo() {
+    const d = buildDemo();
+    state.saved = { months: state.months, config: state.config, portfolio: state.portfolio };
+    state.months = d.months;
+    state.config = d.config;
+    state.portfolio = d.portfolio;
+    state.demo = true;
+    state.month = monthKey(new Date());
+    render();
+  }
+  function exitDemo() {
+    if (!state.demo) return;
+    const s = state.saved || {};
+    state.months = s.months || {};
+    state.config = s.config || { orcamentos: {}, metaEconomia: 0, saldoInicial: 0, updatedAt: 0 };
+    state.portfolio = s.portfolio || { ativos: [], updatedAt: 0 };
+    state.saved = null;
+    state.demo = false;
+    state.armed = null;
+    render();
+  }
+  function guardDemo() {
+    if (!state.demo) return false;
+    toast("Isso são dados de exemplo. Clique em “Sair do exemplo” para usar os seus.");
+    return true;
+  }
+  function putEntry(e, at) {
+    const key = e.data.slice(0, 7);
+    if (!state.months[key]) state.months[key] = { entries: [], updatedAt: 0 };
+    const arr = state.months[key].entries;
+    if (typeof at === "number" && at >= 0 && at <= arr.length) arr.splice(at, 0, e);
+    else arr.push(e);
+    queueWrite("month", key);
+  }
+  function removeEntry(id) {
+    for (const key of Object.keys(state.months)) {
+      const arr = state.months[key].entries;
+      const i = arr.findIndex((x) => x.id === id);
+      if (i >= 0) { arr.splice(i, 1); queueWrite("month", key); return { key, index: i }; }
+    }
+    return null;
+  }
+  function findEntry(id) {
+    for (const key of Object.keys(state.months)) {
+      const e = state.months[key].entries.find((x) => x.id === id);
+      if (e) return e;
+    }
+    return null;
+  }
+
+  /* ================= UI wiring ================= */
+  function buildNav() {
+    const rail = document.getElementById("navRail");
+    const tabs = document.getElementById("navTabs");
+    rail.innerHTML = VIEWS.map((v) => `<button type="button" data-view="${v.id}"><span class="dot"></span>${v.label}</button>`).join("");
+    tabs.innerHTML = VIEWS.map((v) => `<button type="button" data-view="${v.id}"><span class="gl">${v.glyph}</span>${v.short}</button>`).join("");
+    for (const b of document.querySelectorAll("[data-view]")) {
+      b.addEventListener("click", () => { state.view = b.dataset.view; state.armed = null; render(); window.scrollTo({ top: 0, behavior: "instant" }); });
+    }
+  }
+
+  function fillSelect(el, items, selected) {
+    el.innerHTML = items.map((i) => `<option value="${esc(i)}"${i === selected ? " selected" : ""}>${esc(i)}</option>`).join("");
+  }
+
+  function setTipo(t) {
+    state.tipo = t;
+    for (const b of document.querySelectorAll("#tipoSeg button")) b.setAttribute("aria-pressed", String(b.dataset.t === t));
+    fillSelect(document.getElementById("fCategoria"), CATS[t], CATS[t][0]);
+  }
+
+  function msg(el, text, kind) {
+    el.textContent = text;
+    el.className = "form-msg" + (kind ? " " + kind : "");
+    if (text) setTimeout(() => { if (el.textContent === text) { el.textContent = ""; el.className = "form-msg"; } }, 4000);
+  }
+
+  function wire() {
+    buildNav();
+
+    document.getElementById("mPrev").addEventListener("click", () => { state.month = shiftKey(state.month, -1); render(); });
+    document.getElementById("mNext").addEventListener("click", () => { state.month = shiftKey(state.month, 1); render(); });
+    document.getElementById("mToday").addEventListener("click", () => { state.month = monthKey(new Date()); render(); });
+    document.getElementById("btnDemoToggle").addEventListener("click", () => {
+      if (state.demo) { exitDemo(); toast("Pronto — agora é o seu caderno."); }
+      else enterDemo();
+    });
+    document.getElementById("syncPill").addEventListener("click", () => {
+      if (!DB) { toast("Seus dados estão salvos neste navegador."); return; }
+      setSync("saving", "Sincronizando");
+      pullCloud(false);
+    });
+
+    for (const b of document.querySelectorAll("#tipoSeg button")) b.addEventListener("click", () => setTipo(b.dataset.t));
+    setTipo("despesa");
+    fillSelect(document.getElementById("fPagamento"), PAGAMENTOS, "Pix");
+    fillSelect(document.getElementById("aTipo"), TIPOS_ATIVO, TIPOS_ATIVO[0]);
+    document.getElementById("fData").value = todayISO();
+    document.getElementById("aData").value = todayISO();
+    document.getElementById("pData").value = todayISO();
+
+    // entry form
+    document.getElementById("entryForm").addEventListener("submit", (ev) => {
+      ev.preventDefault();
+      const m = document.getElementById("fMsg");
+      const valor = parseMoney(document.getElementById("fValor").value);
+      const data = document.getElementById("fData").value;
+      if (!Number.isFinite(valor) || valor <= 0) return msg(m, "Informe um valor maior que zero.", "err");
+      if (!data) return msg(m, "Escolha a data do lançamento.", "err");
+      if (guardDemo()) return;
+      const payload = {
+        tipo: state.tipo, data, valor: Math.round(valor * 100) / 100,
+        categoria: document.getElementById("fCategoria").value,
+        descricao: document.getElementById("fDesc").value.trim(),
+        pagamento: state.tipo === "perda" ? "—" : document.getElementById("fPagamento").value,
+      };
+      if (state.editing) {
+        const loc = removeEntry(state.editing);
+        const sameMonth = loc && loc.key === data.slice(0, 7);
+        putEntry(Object.assign({ id: state.editing }, payload), sameMonth ? loc.index : undefined);
+        state.editing = null;
+        document.getElementById("fSubmit").textContent = "Lançar";
+        document.getElementById("fCancel").hidden = true;
+        msg(m, "Lançamento atualizado.", "ok");
+      } else {
+        putEntry(Object.assign({ id: uid() }, payload));
+        msg(m, TIPO_META[payload.tipo].label + " de " + money(payload.valor) + " registrado.", "ok");
+      }
+      document.getElementById("fValor").value = "";
+      document.getElementById("fDesc").value = "";
+      state.month = data.slice(0, 7);
+      render();
+      document.getElementById("fValor").focus();
+    });
+    document.getElementById("fCancel").addEventListener("click", () => {
+      state.editing = null;
+      document.getElementById("fSubmit").textContent = "Lançar";
+      document.getElementById("fCancel").hidden = true;
+      document.getElementById("fValor").value = "";
+      document.getElementById("fDesc").value = "";
+      msg(document.getElementById("fMsg"), "");
+    });
+
+    // list actions
+    document.getElementById("entryRows").addEventListener("click", (ev) => {
+      const ed = ev.target.closest("[data-edit]");
+      const dl = ev.target.closest("[data-del]");
+      if (ed) {
+        if (guardDemo()) return;
+        const e = findEntry(ed.dataset.edit);
+        if (!e) return;
+        state.editing = e.id;
+        setTipo(e.tipo);
+        document.getElementById("fValor").value = Number(e.valor).toFixed(2).replace(".", ",");
+        document.getElementById("fData").value = e.data;
+        const cs = document.getElementById("fCategoria");
+        if (![...cs.options].some((o) => o.value === e.categoria)) cs.insertAdjacentHTML("afterbegin", `<option value="${esc(e.categoria)}">${esc(e.categoria)}</option>`);
+        cs.value = e.categoria;
+        document.getElementById("fDesc").value = e.descricao || "";
+        if (e.pagamento && e.pagamento !== "—") document.getElementById("fPagamento").value = e.pagamento;
+        document.getElementById("fSubmit").textContent = "Salvar alteração";
+        document.getElementById("fCancel").hidden = false;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        msg(document.getElementById("fMsg"), "Editando lançamento.", "");
+        return;
+      }
+      if (dl) {
+        const id = dl.dataset.del;
+        if (guardDemo()) return;
+        if (state.armed !== id) { state.armed = id; renderEntries(); return; }
+        removeEntry(id);
+        state.armed = null;
+        render();
+      }
+    });
+
+    for (const id of ["flTipo", "flCat", "flQ"]) {
+      document.getElementById(id).addEventListener("input", () => {
+        state.filters.tipo = document.getElementById("flTipo").value;
+        state.filters.cat = document.getElementById("flCat").value;
+        state.filters.q = document.getElementById("flQ").value;
+        renderEntries();
+      });
+    }
+
+    // assets
+    document.getElementById("assetForm").addEventListener("submit", (ev) => {
+      ev.preventDefault();
+      const m = document.getElementById("aMsg");
+      const nome = document.getElementById("aNome").value.trim();
+      const valor = parseMoney(document.getElementById("aValor").value);
+      if (!nome) return msg(m, "Dê um nome ao ativo.", "err");
+      if (!Number.isFinite(valor) || valor <= 0) return msg(m, "Informe o aporte inicial.", "err");
+      if (guardDemo()) return;
+      state.portfolio.ativos.push({
+        id: uid(), nome, tipo: document.getElementById("aTipo").value,
+        valorAtual: Math.round(valor * 100) / 100,
+        aportes: [{ data: document.getElementById("aData").value || todayISO(), valor: Math.round(valor * 100) / 100 }],
+      });
+      queueWrite("portfolio");
+      document.getElementById("aNome").value = "";
+      document.getElementById("aValor").value = "";
+      msg(m, nome + " adicionado à carteira.", "ok");
+      render();
+    });
+
+    document.getElementById("aporteForm").addEventListener("submit", (ev) => {
+      ev.preventDefault();
+      const m = document.getElementById("pMsg");
+      const id = document.getElementById("pAtivo").value;
+      const valor = parseMoney(document.getElementById("pValor").value);
+      const a2 = state.portfolio.ativos.find((x) => x.id === id);
+      if (!a2) return msg(m, "Cadastre um ativo primeiro.", "err");
+      if (!Number.isFinite(valor) || valor <= 0) return msg(m, "Informe o valor do aporte.", "err");
+      if (guardDemo()) return;
+      const v = Math.round(valor * 100) / 100;
+      a2.aportes = a2.aportes || [];
+      a2.aportes.push({ data: document.getElementById("pData").value || todayISO(), valor: v });
+      a2.valorAtual = (Number(a2.valorAtual) || 0) + v;
+      queueWrite("portfolio");
+      document.getElementById("pValor").value = "";
+      msg(m, "Aporte de " + money(v) + " em " + a2.nome + ".", "ok");
+      render();
+    });
+
+    document.getElementById("invTbl").addEventListener("change", (ev) => {
+      const inp = ev.target.closest("[data-atual]");
+      if (!inp) return;
+      const a = state.portfolio.ativos.find((x) => x.id === inp.dataset.atual);
+      if (!a) return;
+      const v = parseMoney(inp.value);
+      if (!Number.isFinite(v) || v < 0) { render(); return; }
+      if (guardDemo()) { render(); return; }
+      a.valorAtual = Math.round(v * 100) / 100;
+      queueWrite("portfolio");
+      render();
+    });
+    document.getElementById("invTbl").addEventListener("click", (ev) => {
+      const b = ev.target.closest("[data-delasset]");
+      if (!b) return;
+      const id = b.dataset.delasset;
+      if (guardDemo()) return;
+      if (state.armed !== id) { state.armed = id; renderInv(); return; }
+      state.portfolio.ativos = state.portfolio.ativos.filter((x) => x.id !== id);
+      state.armed = null;
+      queueWrite("portfolio");
+      render();
+    });
+
+    // budget
+    document.getElementById("budgetTbl").addEventListener("change", (ev) => {
+      const inp = ev.target.closest("[data-orc]");
+      if (!inp) return;
+      if (guardDemo()) { renderBudget(); return; }
+      const k = inp.dataset.orc;
+      const v = parseMoney(inp.value);
+      state.config.orcamentos = state.config.orcamentos || {};
+      if (!inp.value.trim() || !Number.isFinite(v) || v <= 0) delete state.config.orcamentos[k];
+      else state.config.orcamentos[k] = Math.round(v * 100) / 100;
+      queueWrite("config");
+      renderBudget();
+    });
+    document.getElementById("cMeta").addEventListener("change", (ev) => {
+      if (guardDemo()) { renderBudget(); return; }
+      const v = parseMoney(ev.target.value);
+      state.config.metaEconomia = Number.isFinite(v) && v > 0 ? Math.round(v * 100) / 100 : 0;
+      queueWrite("config"); renderBudget();
+    });
+    document.getElementById("cSaldo").addEventListener("change", (ev) => {
+      if (guardDemo()) { render(); return; }
+      const v = parseMoney(ev.target.value);
+      state.config.saldoInicial = Number.isFinite(v) ? Math.round(v * 100) / 100 : 0;
+      queueWrite("config"); render();
+    });
+
+    document.getElementById("btnExport").addEventListener("click", exportCSV);
+
+    let rt = null;
+    window.addEventListener("resize", () => {
+      clearTimeout(rt);
+      rt = setTimeout(() => {
+        if (state.view === "resumo") { renderFlow(); renderCats(); }
+        if (state.view === "investimentos") renderAlloc();
+      }, 160);
+    });
+  }
+
+  /* ================= CSV ================= */
+  async function exportCSV() {
+    const rows = [["data", "tipo", "categoria", "descricao", "forma", "valor"]];
+    for (const k of allMonthKeys()) {
+      for (const e of entriesOf(k).slice().sort((a, b) => (a.data < b.data ? -1 : 1))) {
+        rows.push([e.data, e.tipo, e.categoria || "", e.descricao || "", e.pagamento || "", String(Number(e.valor) || 0).replace(".", ",")]);
+      }
+    }
+    const csv = "﻿" + rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(";")).join("\r\n");
+    const dl = await (window.claude && window.claude.use ? window.claude.use("downloads") : Promise.resolve(null));
+    if (dl) {
+      try {
+        await dl.save({ filename: "lancamentos-caderno-de-caixa.csv", data: csv });
+        setNote("CSV enviado para download.");
+        return;
+      } catch (_) {}
+    }
+    setNote("Não consegui iniciar o download do CSV aqui.");
+  }
+
+  /* ================= boot ================= */
+  function start() {
+    wire();
+    loadLocal();
+    setSync("local", "Salvo aqui");
+    setNote("Salvo neste navegador. Conectando à nuvem…");
+    render();
+    connectDb();
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && DB && !pending.size && !inFlight) pullCloud(true);
+    });
+  }
+
+  async function connectDb() {
+    if (!(window.claude && typeof window.claude.use === "function")) {
+      setNote("Salvo neste navegador.");
+      return;
+    }
+    let db = null;
+    try { db = await window.claude.use("db"); } catch (_) { db = null; }
+    if (!db) {
+      setSync("local", "Salvo aqui");
+      setNote("Salvo neste navegador (a nuvem não está disponível aqui).");
+      return;
+    }
+    DB = db;
+    state.backend = "db";
+    setNote("Salvo na nuvem · sincroniza entre seus aparelhos.");
+    const r = await pullCloud(true);
+    if (r.ok && r.cloudEmpty && hasAnyData()) pushAll();
+    else if (r.ok) setSync("cloud", "Sincronizado");
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+})();
+</script>
