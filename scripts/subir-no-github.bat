@@ -1,6 +1,6 @@
 @echo off
 setlocal
-cd /d "%~dp0"
+cd /d "%~dp0.."
 
 where git >nul 2>nul || (echo Git nao encontrado. Instale em https://git-scm.com/download/win ^& pause ^& exit /b 1)
 

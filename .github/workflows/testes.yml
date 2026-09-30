@@ -1,0 +1,23 @@
+name: Testes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Confere se o index.html está em dia com src/app.html
+        run: |
+          node build.mjs
+          git diff --exit-code index.html || (echo "::error::Rode 'node build.mjs' e envie o index.html atualizado." && exit 1)
+      - run: npx playwright install --with-deps chromium
+      - run: npm test

@@ -1,0 +1,9 @@
+node_modules/
+test-results/
+playwright-report/
+.env
+.env.*
+.vercel
+.DS_Store
+Thumbs.db
+.vscode/

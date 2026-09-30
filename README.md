@@ -1,7 +1,13 @@
 # Caderno de Caixa
 
+[![Testes](https://github.com/Eduoliver04/crm-eduardo/actions/workflows/testes.yml/badge.svg)](https://github.com/Eduoliver04/crm-eduardo/actions/workflows/testes.yml)
+![HTML/CSS/JS puro](https://img.shields.io/badge/stack-HTML%20%7C%20CSS%20%7C%20JS%20puro-e75228)
+![Versão](https://img.shields.io/badge/vers%C3%A3o-3.0.0-blue)
+
 CRM financeiro pessoal: ganhos, despesas, perdas, investimentos e metas de orçamento.
-Aplicação de arquivo único, sem build, sem dependências e sem back-end.
+Aplicação de arquivo único, sem framework, sem dependências de execução e sem back-end.
+
+**▶ Ver funcionando:** [crm-eduardo-eight.vercel.app](https://crm-eduardo-eight.vercel.app)
 
 ## O que faz
 
@@ -44,6 +50,8 @@ build.mjs         gera index.html standalone a partir de src/app.html
 index.html        saída do build — abre direto no navegador / GitHub Pages
 tests/e2e.mjs     testes ponta a ponta (sem nuvem e com nuvem simulada)
 tests/e2e-extra.mjs  nuvem recusando gravação + celular em tema escuro
+scripts/subir-no-github.bat  commit + push com dois cliques (Windows)
+.github/workflows/testes.yml roda build e testes a cada push
 ```
 
 `src/app.html` não tem `<!doctype>`, `<html>`, `<head>` nem `<body>`: a plataforma de
@@ -58,6 +66,10 @@ npx playwright install chromium   # só na primeira vez
 node tests/e2e.mjs             # 34 verificações × 2 cenários
 node tests/e2e-extra.mjs       # nuvem hostil + celular
 ```
+
+No Windows, `scripts\subir-no-github.bat "mensagem do commit"` faz o commit e envia para o
+GitHub. A cada envio, o GitHub Actions confere se o `index.html` está em dia com o
+`src/app.html` e roda os testes ponta a ponta.
 
 Os testes abrem o app num Chromium headless, injetam uma nuvem falsa e exercitam os fluxos
 reais (lançar, editar, excluir, filtrar, aportar, atualizar valor atual, definir limites,
